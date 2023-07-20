@@ -4,11 +4,10 @@ import com.usermanagementsystem.common.Result;
 import com.usermanagementsystem.management.entity.User;
 import com.usermanagementsystem.management.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -28,6 +27,15 @@ public class UserController {
     public Result<List<User>> getAllUsers(){
         List<User> userList = userService.list();
         return Result.success(userList);
+    }
+
+    @PostMapping("/login")
+    public Result<Map<String, Object>> login(@RequestBody User user){
+        Map<String, Object> data = userService.login(user);
+        if (data != null){
+            return Result.success(data);
+        }
+        return Result.fail(40001, "Incorrect username or password");
     }
 
 }

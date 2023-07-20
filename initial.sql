@@ -11,7 +11,8 @@ CREATE TABLE t_user (
     phone varchar(12) DEFAULT NULL,
     avatar varchar(255) DEFAULT NULL,
     status int(1) DEFAULT  NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    CONSTRAINT username_unique UNIQUE (username)
 );
 
 INSERT INTO t_user (id, username, password, lastname, firstame, email, phone, avatar, status)
