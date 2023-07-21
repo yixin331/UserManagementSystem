@@ -15,7 +15,7 @@ public class CodeGenerator {
         String password = "123456";
         String moduleName = "management";
         String mapperLocation = "D:\\Github\\UserManagementSystem\\management\\src\\main\\resources\\mapper\\" + moduleName;
-        String tables = "t_user,t_role";
+        String tables = "t_user,t_role,t_user_role";
         FastAutoGenerator.create(url, username, password)
                 .globalConfig(builder -> {
                     builder.author("helen")

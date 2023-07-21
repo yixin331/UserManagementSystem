@@ -15,7 +15,7 @@ import java.util.Map;
  * </p>
  *
  * @author helen
- * @since 2023-07-17
+ * @since 2023-07-21
  */
 @RestController
 @RequestMapping("/user")
@@ -35,7 +35,16 @@ public class UserController {
         if (data != null){
             return Result.success(data);
         }
-        return Result.fail(40001, "Incorrect username or password");
+        return Result.fail(40001, "Incorrect username or password.");
+    }
+
+    @GetMapping("/info")
+    public Result<Map<String, Object>> getUserInfo(@RequestParam("token") String token){
+        Map<String, Object> data = userService.getUserInfo(token);
+        if (data != null){
+            return Result.success(data);
+        }
+        return Result.fail(40002, "Invalid login infomation. Please login again");
     }
 
 }

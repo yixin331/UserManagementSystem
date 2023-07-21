@@ -1,7 +1,9 @@
 package com.usermanagementsystem.management.mapper;
 
-import com.usermanagementsystem.management.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.usermanagementsystem.management.entity.User;
+
+import java.util.List;
 
 /**
  * <p>
@@ -9,8 +11,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author helen
- * @since 2023-07-17
+ * @since 2023-07-21
  */
 public interface UserMapper extends BaseMapper<User> {
-
+    public List<String> getRoleNameByUserId(Integer userId);
 }

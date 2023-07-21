@@ -11,15 +11,15 @@ import java.io.Serializable;
  * </p>
  *
  * @author helen
- * @since 2023-07-17
+ * @since 2023-07-21
  */
 @TableName("t_user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    @TableId(value = "userid", type = IdType.AUTO)
+    private Integer userid;
 
     private String username;
 
@@ -37,12 +37,12 @@ public class User implements Serializable {
 
     private Integer status;
 
-    public Integer getId() {
-        return id;
+    public Integer getUserid() {
+        return userid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 
     public String getUsername() {
@@ -112,7 +112,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-            "id = " + id +
+            "userid = " + userid +
             ", username = " + username +
             ", password = " + password +
             ", lastname = " + lastname +

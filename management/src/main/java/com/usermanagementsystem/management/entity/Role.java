@@ -11,7 +11,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author helen
- * @since 2023-07-17
+ * @since 2023-07-21
  */
 @TableName("t_role")
 public class Role implements Serializable {
@@ -22,6 +22,8 @@ public class Role implements Serializable {
     private Integer roleid;
 
     private String rolename;
+
+    private String roledescription;
 
     public Integer getRoleid() {
         return roleid;
@@ -39,11 +41,20 @@ public class Role implements Serializable {
         this.rolename = rolename;
     }
 
+    public String getRoledescription() {
+        return roledescription;
+    }
+
+    public void setRoledescription(String roledescription) {
+        this.roledescription = roledescription;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
             "roleid = " + roleid +
             ", rolename = " + rolename +
+            ", roledescription = " + roledescription +
         "}";
     }
 }

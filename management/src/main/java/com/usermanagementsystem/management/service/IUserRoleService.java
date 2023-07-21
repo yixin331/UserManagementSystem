@@ -1,6 +1,6 @@
 package com.usermanagementsystem.management.service;
 
-import com.usermanagementsystem.management.entity.Role;
+import com.usermanagementsystem.management.entity.UserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author helen
  * @since 2023-07-21
  */
-public interface IRoleService extends IService<Role> {
+public interface IUserRoleService extends IService<UserRole> {
 
 }

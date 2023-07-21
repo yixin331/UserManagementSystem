@@ -1,6 +1,6 @@
 package com.usermanagementsystem.management.mapper;
 
-import com.usermanagementsystem.management.entity.Role;
+import com.usermanagementsystem.management.entity.UserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author helen
  * @since 2023-07-21
  */
-public interface RoleMapper extends BaseMapper<Role> {
+public interface UserRoleMapper extends BaseMapper<UserRole> {
 
 }
