@@ -19,6 +19,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
     @Autowired
     private IUserService userService;
@@ -45,6 +46,12 @@ public class UserController {
             return Result.success(data);
         }
         return Result.fail(40002, "Invalid login infomation. Please login again");
+    }
+
+    @PostMapping("/logout")
+    public Result<Map<String, Object>> logout(@RequestHeader("X-Token") String token){
+         userService.logout(token);
+         return Result.success();
     }
 
 }
