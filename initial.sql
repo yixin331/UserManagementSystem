@@ -6,7 +6,7 @@ CREATE TABLE t_user (
     username varchar(255) NOT NULL,
     password varchar(100) DEFAULT NULL,
     lastname varchar(255) DEFAULT NULL,
-    firstame varchar(255) DEFAULT NULL,
+    firstname varchar(255) DEFAULT NULL,
     email varchar(255) DEFAULT NULL,
     phone varchar(12) DEFAULT NULL,
     avatar varchar(255) DEFAULT NULL,
@@ -15,15 +15,15 @@ CREATE TABLE t_user (
     CONSTRAINT username_unique UNIQUE (username)
 );
 
-INSERT INTO t_user (userid, username, password, lastname, firstame, email, phone, avatar, status)
+INSERT INTO t_user (userid, username, password, lastname, firstname, email, phone, avatar, status)
 VALUES (1, 'lars11', '112354', 'Lars', 'Monsen', 'lars@gmail.com', '1111123456', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 1);
-INSERT INTO t_user (userid, username, password, lastname, firstame, email, phone, avatar, status)
+INSERT INTO t_user (userid, username, password, lastname, firstname, email, phone, avatar, status)
 VALUES (2, 'helen2', '000000', 'Wang', 'Helen', 'helen@gmail.com', '7785225555', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 1);
-INSERT INTO t_user (userid, username, password, lastname, firstame, email, phone, avatar, status)
+INSERT INTO t_user (userid, username, password, lastname, firstname, email, phone, avatar, status)
 VALUES (3, 'liam119', '119873', 'Chen', 'Liam', 'liam@gmail.com', '7785625372', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 1);
-INSERT INTO t_user (userid, username, password, lastname, firstame, email, phone, avatar, status)
+INSERT INTO t_user (userid, username, password, lastname, firstname, email, phone, avatar, status)
 VALUES (4, 'smith', '167269', 'Smith', 'Mary', 'mary111@gmail.com', '2067281292', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 1);
-INSERT INTO t_user (userid, username, password, lastname, firstame, email, phone, avatar, status)
+INSERT INTO t_user (userid, username, password, lastname, firstname, email, phone, avatar, status)
 VALUES (5, 'amber1', '679303', 'Larry', 'Amber', 'larry.amber@gmail.com', '9820721124', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 1);
 
 CREATE TABLE t_role (

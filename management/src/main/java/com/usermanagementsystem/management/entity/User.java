@@ -27,7 +27,7 @@ public class User implements Serializable {
 
     private String lastname;
 
-    private String firstame;
+    private String firstname;
 
     private String email;
 
@@ -69,12 +69,12 @@ public class User implements Serializable {
         this.lastname = lastname;
     }
 
-    public String getFirstame() {
-        return firstame;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstame(String firstame) {
-        this.firstame = firstame;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getEmail() {
@@ -116,7 +116,7 @@ public class User implements Serializable {
             ", username = " + username +
             ", password = " + password +
             ", lastname = " + lastname +
-            ", firstame = " + firstame +
+            ", firstname = " + firstname +
             ", email = " + email +
             ", phone = " + phone +
             ", avatar = " + avatar +
