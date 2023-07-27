@@ -8,7 +8,7 @@
                 <el-button @click="getUserList" type="primary" icon="el-icon-search">Search</el-button>
         </el-col>
         <el-col :span="4" align="right">
-          <el-button type="primary" icon="el-icon-plus" circle></el-button>
+          <el-button @click="openEditUI" type="primary" icon="el-icon-plus" circle></el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -32,20 +32,54 @@
           </el-table-column>
           <el-table-column prop="phone" label="Phone" width="120">
           </el-table-column>
+          </el-table-column>
+          <el-table-column prop="status" label="Status" width="80">
+          </el-table-column>
           <el-table-column label="Operations" width="120">
           </el-table-column>
         </el-table>
     </el-card>
 
     <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="searchModel.pageNo"
-          :page-sizes="[5, 10, 20, 30]"
-          :page-size="searchModel.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-        </el-pagination>
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="searchModel.pageNo"
+      :page-sizes="[5, 10, 20, 30]"
+      :page-size="searchModel.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
+
+    <el-dialog @close="clearForm" :title="title" :visible.sync="dialogFormVisible">
+      <el-form :model="userForm" :rules="rules">
+        <el-form-item label="Username" prop="username" :label-width="formLabelWidth">
+          <el-input v-model="userForm.username" autocomplete="off" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="Password" prop="password" :label-width="formLabelWidth">
+          <el-input type="password" v-model="userForm.password" autocomplete="off" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="Last Name" :label-width="formLabelWidth">
+          <el-input v-model="userForm.lastname" autocomplete="off" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="First Name" :label-width="formLabelWidth">
+          <el-input v-model="userForm.firstname" autocomplete="off" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="Email" prop="email" :label-width="formLabelWidth">
+          <el-input v-model="userForm.email" autocomplete="off" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="Phone" :label-width="formLabelWidth">
+          <el-input v-model="userForm.phone" autocomplete="off" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="Status" :label-width="formLabelWidth">
+          <el-switch v-model="userForm.status" :active-value="1" :inactive-value="0">
+          </el-switch>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -54,16 +88,50 @@
 import userAPI from '@/api/userManagement'
 export default{
   data() {
+    var checkUsername = (rule, value, callback) => {
+          var reg = /^[a-z][a-z0-9]*$/;
+          if (!reg.test(value)) {
+            return callback(new Error("Lowercase letter start, letters and numbers only"));
+          }
+          callback();
+    };
+
     return {
+      formLabelWidth: '130px',
+      userForm: {},
+      dialogFormVisible: false,
+      title: "",
       total: 0,
       searchModel: {
         pageNo: 1,
         pageSize: 10
       },
-      userList: []
+      userList: [],
+      rules: {
+        username: [
+          { required: true, message: 'Please input Username', trigger: 'blur' },
+          { min: 5, max: 50, message: 'Length should be 5 to 50', trigger: 'blur' },
+          { validator: checkUsername, trigger: ['blur', 'change'] },
+        ],
+        password: [
+          { required: true, message: 'Please input Password', trigger: 'blur' },
+          { min: 6, max: 30, message: 'Length should be 6 to 30', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: 'Please input Email', trigger: 'blur' },
+          { type: 'email', message: 'Please input correct Email', trigger: ['blur', 'change'] }
+        ]
+      }
     }
   },
   methods: {
+    clearForm() {
+      this.userForm = {};
+    },
+    openEditUI() {
+      this.title = 'New User';
+      this.dialogFormVisible = true;
+    },
     handleSizeChange(pageSize) {
       this.searchModel.pageSize = pageSize;
       this.getUserList();
@@ -90,6 +158,9 @@ export default{
 #search .el-input {
   width: 200px;
   margin-right: 10px;
+}
+.el-dialog .el-input {
+  width: 85%;
 }
 </style>
 

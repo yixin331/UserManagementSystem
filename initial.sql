@@ -7,10 +7,10 @@ CREATE TABLE t_user (
     password varchar(100) DEFAULT NULL,
     lastname varchar(255) DEFAULT NULL,
     firstname varchar(255) DEFAULT NULL,
-    email varchar(255) DEFAULT NULL,
+    email varchar(255) NOT NULL,
     phone varchar(12) DEFAULT NULL,
     avatar varchar(255) DEFAULT NULL,
-    status int(1) DEFAULT  NULL,
+    status int(1) DEFAULT 1,
     PRIMARY KEY (userid),
     CONSTRAINT username_unique UNIQUE (username)
 );
