@@ -34,6 +34,10 @@
           </el-table-column>
           </el-table-column>
           <el-table-column prop="status" label="Status" width="80">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.status == 1">Active</el-tag>
+              <el-tag v-else type="danger">Inactive</el-tag>
+            </template>
           </el-table-column>
           <el-table-column label="Operations" width="120">
           </el-table-column>
@@ -51,7 +55,7 @@
     </el-pagination>
 
     <el-dialog @close="clearForm" :title="title" :visible.sync="dialogFormVisible">
-      <el-form :model="userForm" :rules="rules">
+      <el-form :model="userForm" ref="userFormRef" :rules="rules">
         <el-form-item label="Username" prop="username" :label-width="formLabelWidth">
           <el-input v-model="userForm.username" autocomplete="off" clearable></el-input>
         </el-form-item>
@@ -67,7 +71,7 @@
         <el-form-item label="Email" prop="email" :label-width="formLabelWidth">
           <el-input v-model="userForm.email" autocomplete="off" clearable></el-input>
         </el-form-item>
-        <el-form-item label="Phone" :label-width="formLabelWidth">
+        <el-form-item label="Phone" prop="phone" :label-width="formLabelWidth">
           <el-input v-model="userForm.phone" autocomplete="off" clearable></el-input>
         </el-form-item>
         <el-form-item label="Status" :label-width="formLabelWidth">
@@ -77,7 +81,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
+        <el-button type="primary" @click="saveUser">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -89,11 +93,21 @@ import userAPI from '@/api/userManagement'
 export default{
   data() {
     var checkUsername = (rule, value, callback) => {
-          var reg = /^[a-z][a-z0-9]*$/;
-          if (!reg.test(value)) {
-            return callback(new Error("Lowercase letter start, letters and numbers only"));
-          }
-          callback();
+      var reg = /^[a-z][a-z0-9]*$/;
+      if (!reg.test(value)) {
+        return callback(new Error("Lowercase letter start, letters and numbers only"));
+      }
+      callback();
+    };
+
+    var checkPhone = (rule, value, callback) => {
+      var reg = /^(\(\+[0-9]{2}\))?([0-9]{3}-?)?([0-9]{3})\-?([0-9]{4})(\/[0-9]{4})?$/;
+      if (!reg.test(value)) {
+        if (value){
+          return callback(new Error("Wrong phone format"));
+        }
+      }
+      callback();
     };
 
     return {
@@ -117,6 +131,9 @@ export default{
           { required: true, message: 'Please input Password', trigger: 'blur' },
           { min: 6, max: 30, message: 'Length should be 6 to 30', trigger: 'blur' }
         ],
+        phone: [
+          { validator: checkPhone, trigger: ['blur', 'change'] }
+        ],
         email: [
           { required: true, message: 'Please input Email', trigger: 'blur' },
           { type: 'email', message: 'Please input correct Email', trigger: ['blur', 'change'] }
@@ -125,8 +142,34 @@ export default{
     }
   },
   methods: {
+    saveUser() {
+      this.$refs.userFormRef.validate((valid) => {
+        if (valid) {
+          // submit to backend
+          userAPI.addUser(this.userForm).then(response => {
+
+            // success
+            this.$message({
+              message: response.message,
+              type: 'success'
+            });
+
+            // close form
+            this.dialogFormVisible = false;
+
+            // refresh
+            this.getUserList();
+
+          });
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
     clearForm() {
       this.userForm = {};
+      this.$refs.userFormRef.clearValidate();
     },
     openEditUI() {
       this.title = 'New User';

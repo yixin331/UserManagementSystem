@@ -9,7 +9,7 @@ CREATE TABLE t_user (
     firstname varchar(255) DEFAULT NULL,
     email varchar(255) NOT NULL,
     phone varchar(12) DEFAULT NULL,
-    avatar varchar(255) DEFAULT NULL,
+    avatar varchar(255) DEFAULT 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     status int(1) DEFAULT 1,
     PRIMARY KEY (userid),
     CONSTRAINT username_unique UNIQUE (username)

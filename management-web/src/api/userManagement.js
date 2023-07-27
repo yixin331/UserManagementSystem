@@ -12,5 +12,12 @@ export default {
         email: searchModel.email
       }
     });
+  },
+  addUser(user) {
+    return request ({
+      url: '/user',
+      method: 'post',
+      data: user
+    });
   }
 }

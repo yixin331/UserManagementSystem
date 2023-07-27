@@ -66,6 +66,7 @@ public class UserController {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.hasLength(username), User::getUsername, username);
         wrapper.like(StringUtils.hasLength(email), User::getEmail, email);
+        wrapper.orderByAsc(User::getUserid);
         Page<User> page = new Page<>(pageNo, pageSize);
         userService.page(page, wrapper);
         Map<String, Object> data = new HashMap<>();
