@@ -11,7 +11,7 @@ import java.util.List;
  * </p>
  *
  * @author helen
- * @since 2023-07-21
+ * @since 2023-07-28
  */
 public interface UserMapper extends BaseMapper<User> {
     public List<String> getRoleNameByUserId(Integer userId);

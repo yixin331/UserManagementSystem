@@ -20,7 +20,7 @@ public class CodeGenerator {
                 .globalConfig(builder -> {
                     builder.author("helen")
                             //.enableSwagger()
-                            //.fileOverride()
+                            .fileOverride()
                             .outputDir("D:\\Github\\UserManagementSystem\\management\\src\\main\\java");
                 })
                 .dataSourceConfig(builder -> builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {

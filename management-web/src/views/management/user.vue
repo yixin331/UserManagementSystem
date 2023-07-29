@@ -8,7 +8,7 @@
                 <el-button @click="getUserList" type="primary" icon="el-icon-search">Search</el-button>
         </el-col>
         <el-col :span="4" align="right">
-          <el-button @click="openEditUI" type="primary" icon="el-icon-plus" circle></el-button>
+          <el-button @click="openEditUI(null)" type="primary" icon="el-icon-plus" circle></el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -33,13 +33,17 @@
           <el-table-column prop="phone" label="Phone" width="120">
           </el-table-column>
           </el-table-column>
-          <el-table-column prop="status" label="Status" width="80">
+          <el-table-column prop="status" label="Status" width="100">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.status == 1">Active</el-tag>
               <el-tag v-else type="danger">Inactive</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Operations" width="120">
+          <el-table-column label="Operations" width="100">
+            <template slot-scope="scope">
+              <el-button @click="openEditUI(scope.row.userid)" type="primary" icon="el-icon-edit" size="small" circle></el-button>
+              <el-button @click="deleteUser(scope.row)" type="danger" icon="el-icon-delete" size="small" circle></el-button>
+            </template>
           </el-table-column>
         </el-table>
     </el-card>
@@ -59,7 +63,7 @@
         <el-form-item label="Username" prop="username" :label-width="formLabelWidth">
           <el-input v-model="userForm.username" autocomplete="off" clearable></el-input>
         </el-form-item>
-        <el-form-item label="Password" prop="password" :label-width="formLabelWidth">
+        <el-form-item v-if="userForm.userid == null || userForm.userid == undefined" label="Password" prop="password" :label-width="formLabelWidth">
           <el-input type="password" v-model="userForm.password" autocomplete="off" clearable></el-input>
         </el-form-item>
         <el-form-item label="Last Name" :label-width="formLabelWidth">
@@ -74,7 +78,7 @@
         <el-form-item label="Phone" prop="phone" :label-width="formLabelWidth">
           <el-input v-model="userForm.phone" autocomplete="off" clearable></el-input>
         </el-form-item>
-        <el-form-item label="Status" :label-width="formLabelWidth">
+        <el-form-item label="Status" :label-width="formLabelWidth" disabled="false">
           <el-switch v-model="userForm.status" :active-value="1" :inactive-value="0">
           </el-switch>
         </el-form-item>
@@ -142,14 +146,36 @@ export default{
     }
   },
   methods: {
+    deleteUser(user){
+      this.$confirm(`This will permanently delete the user ${user.username}. Continue?`, 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+        }).then(() => {
+          userAPI.deleteUserById(user.userid).then(response => {
+            this.$message({
+              showClose: true,
+              type: 'success',
+              message: response.message
+            });
+            this.getUserList();
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Delete canceled'
+        });
+      });
+    },
     saveUser() {
       this.$refs.userFormRef.validate((valid) => {
         if (valid) {
           // submit to backend
-          userAPI.addUser(this.userForm).then(response => {
+          userAPI.saveUser(this.userForm).then(response => {
 
             // success
             this.$message({
+              showClose: true,
               message: response.message,
               type: 'success'
             });
@@ -159,6 +185,14 @@ export default{
 
             // refresh
             this.getUserList();
+
+          }).catch(() => {
+            // fail
+            this.$message({
+              showClose: true,
+              message: response.message,
+              type: 'error'
+            });
 
           });
         } else {
@@ -171,8 +205,15 @@ export default{
       this.userForm = {};
       this.$refs.userFormRef.clearValidate();
     },
-    openEditUI() {
-      this.title = 'New User';
+    openEditUI(id) {
+      if (id == null){
+        this.title = 'New User';
+      }else{
+        this.title = 'Edit User';
+        userAPI.getUserById(id).then(response => {
+          this.userForm = response.data;
+        });
+      }
       this.dialogFormVisible = true;
     },
     handleSizeChange(pageSize) {

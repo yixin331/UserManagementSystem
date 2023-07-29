@@ -6,6 +6,7 @@ import com.usermanagementsystem.common.Result;
 import com.usermanagementsystem.management.entity.User;
 import com.usermanagementsystem.management.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ import java.util.Map;
  * </p>
  *
  * @author helen
- * @since 2023-07-21
+ * @since 2023-07-28
  */
 @RestController
 @RequestMapping("/user")
@@ -27,6 +28,9 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/all")
     public Result<List<User>> getAllUsers(){
@@ -54,8 +58,8 @@ public class UserController {
 
     @PostMapping("/logout")
     public Result<Map<String, Object>> logout(@RequestHeader("X-Token") String token){
-         userService.logout(token);
-         return Result.success();
+        userService.logout(token);
+        return Result.success();
     }
 
     @GetMapping("/list")
@@ -78,9 +82,44 @@ public class UserController {
 
     @PostMapping
     public Result<?> addUser(@RequestBody User user){
-        userService.save(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return Result.success("Successfully adding the new user!");
+        try {
+            userService.save(user);
+
+            return Result.success("Successfully adding the new user!");
+        }
+        catch(Exception e) {
+            return Result.fail("Username has been used. Please use another one.");
+        }
+
+    }
+
+    @PutMapping
+    public Result<?> updateUser(@RequestBody User user){
+        user.setPassword(null);
+
+        try {
+            userService.updateById(user);
+
+            return Result.success("Successfully updating the user!");
+        }
+        catch(Exception e) {
+            return Result.fail("Username has been used. Please use another one.");
+        }
+
+    }
+
+    @GetMapping("/{id}")
+    public Result<User> getUserById(@PathVariable("id") Integer id){
+        User user = userService.getById(id);
+        return Result.success(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public Result<User> deleteUserById(@PathVariable("id") Integer id){
+        userService.removeById(id);
+        return Result.success("Successfully deleting the user!");
     }
 
 }

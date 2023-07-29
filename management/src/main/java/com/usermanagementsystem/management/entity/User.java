@@ -11,7 +11,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author helen
- * @since 2023-07-21
+ * @since 2023-07-28
  */
 @TableName("t_user")
 public class User implements Serializable {
@@ -36,6 +36,8 @@ public class User implements Serializable {
     private String avatar;
 
     private Integer status;
+
+    private Integer deleted;
 
     public Integer getUserid() {
         return userid;
@@ -109,6 +111,14 @@ public class User implements Serializable {
         this.status = status;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -121,6 +131,7 @@ public class User implements Serializable {
             ", phone = " + phone +
             ", avatar = " + avatar +
             ", status = " + status +
+            ", deleted = " + deleted +
         "}";
     }
 }
